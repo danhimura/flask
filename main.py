@@ -1,12 +1,33 @@
-from flask import Flask, jsonify
-import os
+from flask import Flask, render_template, request
+from random import randint
 
 app = Flask(__name__)
 
 
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def index():
-    return jsonify({"Choo Choo": "Welcome to your Flask app 🚅"})
+    variavel = 'Game adivinhe o numero correto'
+
+
+    if request.method =='GET':
+        return render_template("index.html", variavel=variavel)
+
+    else:
+        numero = randint(1, 20)
+        palpite = int(request.form.get('name'))
+
+        if numero == palpite:
+            return '<h1>Você Ganhou</hi>'
+
+        else:
+            return '<h1>Perdeu Idiota</hi>'
+
+
+@app.route('/<string:nome>')
+def error(nome):
+    variavel = f'Párgina {nome} não encontrada Erro 404'
+    return render_template('error.html', variavel=variavel)
+
 
 
 if __name__ == '__main__':
